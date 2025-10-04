@@ -21,7 +21,10 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+<<<<<<< HEAD
         "laravel/pail": "^1.2",
+=======
+>>>>>>> 497824d6347e399a5ae74323d873f907c925024f
         "laravel/pint": "^1.24",
         "laravel/sail": "^1.41",
         "laravel/telescope": "^5.0",
