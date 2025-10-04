@@ -9,17 +9,17 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     libicu-dev \
-    libpq-dev \
     zip \
     unzip \
+    sqlite3 \
+    libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# Install PHP extensions (tambahkan pdo_sqlite!)
 RUN docker-php-ext-configure intl \
     && docker-php-ext-install \
     pdo \
-    pdo_pgsql \
-    pdo_mysql \
+    pdo_sqlite \
     mbstring \
     exif \
     pcntl \
@@ -44,10 +44,14 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interactio
 # Copy application files
 COPY . .
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www \
+# Create SQLite database
+RUN mkdir -p /var/www/database \
+    && touch /var/www/database/database.sqlite \
+    && chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
-    && chmod -R 755 /var/www/bootstrap/cache
+    && chmod -R 755 /var/www/bootstrap/cache \
+    && chmod 777 /var/www/database \
+    && chmod 666 /var/www/database/database.sqlite
 
 # Expose port
 EXPOSE 8080
